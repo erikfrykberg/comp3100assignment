@@ -58,6 +58,12 @@ public class DSClient {
             //EXPECT JOBN or NONE RESPONSE
             recieve();
 
+            //SEND 'OK'
+            push("OK");
+
+            //RECIEVE "REPEATED CALL"
+            recieve();
+
             //the following is the first JOB breakdown.
             String[] brkn = str.split(" "); 
             String jobId = brkn[2];
