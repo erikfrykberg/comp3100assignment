@@ -72,7 +72,7 @@ public class DSClient {
             String jobId = jobStrings[2];
 
             //REQUEST SERVERS
-            push("GETS Capable " + cores + " " + mem + " " + disk);
+            push("GETS Capable " + coresRequired + " " + memoryRequired + " " + disksRequired);
 
             //RECIEVE THE DATA [number] [length of characters].
             recieve();
