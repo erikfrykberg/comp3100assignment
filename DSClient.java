@@ -2,10 +2,15 @@ import java.net.*;
 import java.io.*;
 
 public class DSClient {
+    
+    //variable declarations.
     static DataOutputStream dout;
+    static BufferedReader din;
+    static String str;
+
     public static void main(String[] args) throws Exception {
         Socket s=new Socket("localhost",50000);  
-        BufferedReader din = new BufferedReader(new InputStreamReader(s.getInputStream())); 
+        din = new BufferedReader(new InputStreamReader(s.getInputStream())); 
         dout = new DataOutputStream(s.getOutputStream());  
         
         /* COMMAND:
@@ -19,7 +24,7 @@ public class DSClient {
 
 
         System.out.println("Server started + established connection correctly!\n");
-        String str = "";
+        str = "";
 
         /**
          * 
@@ -30,15 +35,13 @@ public class DSClient {
         push("HELO");
 
         //EXPECT "OK"
-        str = din.readLine();
-        recieved(str);
+        recieve();
 
         //SEND AUTH
         push("AUTH ERIK.FRYKBERG");
 
         //EXPECT 'OK'
-        str = din.readLine();
-        recieved(str);
+        recieve();
 
         /**
          * 
@@ -46,64 +49,59 @@ public class DSClient {
          * 
         */
         
-
-
+        push("GETS all");
         
-        //SEND REDY
-        push("REDY");
+        recieve();
 
-        //EXPECT SYSTEM LOG INFORMATION
-        str = din.readLine();
-        recieved(str);
+        // //SEND REDY
+        // push("REDY");
 
-        String[] brkn = str.split(" ");
-        String cores = brkn[brkn.length - 3];
-        String mem = brkn[brkn.length - 2];
-        String disk = brkn[brkn.length - 1];
-        String id = brkn[2];
-        System.out.println("---<>--- id: " + id + ", cores: " + cores + ", mem: " + mem + ", disk: " + disk + "---<>---\n");
+        // //EXPECT SYSTEM LOG INFORMATION
+        // recieve();
 
-        //SEND JOB SCHEDULE
-        push("GETS Capable " + cores + " " + mem + " " + disk);
+        // String[] brkn = str.split(" ");
+        // String cores = brkn[brkn.length - 3];
+        // String mem = brkn[brkn.length - 2];
+        // String disk = brkn[brkn.length - 1];
+        // String id = brkn[2];
+        // System.out.println("---<>--- id: " + id + ", cores: " + cores + ", mem: " + mem + ", disk: " + disk + "---<>---\n");
 
-        //READ LINE
-        str = din.readLine();
-        recieved(str);
+        // //SEND JOB SCHEDULE
+        // push("GETS Capable " + cores + " " + mem + " " + disk);
 
-        //SEND OK
-        push("OK");
-        dout.flush();
+        // //READ LINE
+        // recieve();
 
-        //READ LINE
-        str = din.readLine();
-        recieved(str);
+        // //SEND OK
+        // push("OK");
+        // dout.flush();
 
-        //SEND OK x2
-        push("OK");
-        dout.flush();
+        // //READ LINE
+        // recieve();
 
-        //READ LINE
-        str = din.readLine();
-        recieved(str);
+        // //SEND OK x2
+        // push("OK");
+        // dout.flush();
 
-        String[] brkn2 = str.split(" "); 
-        String type = brkn2[0];
-        String serverId = brkn2[1];
+        // //READ LINE
+        // recieve();
 
-        //SEND JOB SCHEDULE
-        push("SCHD " + id + " " + type + " " + serverId);
+        // String[] brkn2 = str.split(" "); 
+        // String type = brkn2[0];
+        // String serverId = brkn2[1];
 
-        //READ LINE
-        str = din.readLine();
-        recieved(str);
+        // //SEND JOB SCHEDULE
+        // push("SCHD " + id + " " + type + " " + serverId);
 
-        //SEND OK
-        push("ok");
-        dout.flush();
+        // //READ LINE
+        // recieve();
 
-        //READ LINE
-        str = din.readLine();
-        recieved(str);
+        // //SEND OK
+        // push("ok");
+        // dout.flush();
+
+        // //READ LINE
+        // recieve();
 
         //QUIT!
         push("QUIT");
@@ -116,7 +114,8 @@ public class DSClient {
         s.close();  
     }
 
-    static void recieved(String str) {
+    static void recieve() throws IOException {
+        str = din.readLine();
         System.out.println("RCVD: \'" + str + "\'\n");
     }
 
