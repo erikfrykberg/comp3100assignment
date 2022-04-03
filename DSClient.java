@@ -1,4 +1,5 @@
 import java.net.*;
+import java.util.ArrayList;
 import java.io.*;
 
 public class DSClient {
@@ -48,9 +49,18 @@ public class DSClient {
          *  LOOP THROUGH THE JOBS.
          * 
         */
+
+        //JOB VARIABLES
+        String jobId; 
+
+        // SERVER VARIABLES
+        String largestType = ""; //store the largest type.
+        int numberOfServers = 0;
+        int index = 0;
+
         System.out.println(" ---<>--- str equals: " + str + " ---<>--- \n");
         //WHILE THERE ARE JOBS TO SCHEDULE.
-        // while(!str.equals("NONE")) {
+        while(!str.equals("NONE")) {
 
             //SEND REDY (for jobs)
             push("REDY");
@@ -60,75 +70,74 @@ public class DSClient {
 
             //the following is the first JOB breakdown.
             String[] jobStrings = str.split(" "); 
-            String coresRequired = jobStrings[jobStrings.length - 3];
-            String memoryRequired = jobStrings[jobStrings.length - 2];
-            String disksRequired = jobStrings[jobStrings.length - 1];
-            String jobId = jobStrings[2];
+            jobId = jobStrings[2];
 
-            //REQUEST SERVERS
-            push("GETS Capable " + coresRequired + " " + memoryRequired + " " + disksRequired);
+            //if the largest server type has not been set, then:
+            if(largestType.equals("")) {
+                
+                String coresRequired = jobStrings[jobStrings.length - 3];
+                String memoryRequired = jobStrings[jobStrings.length - 2];
+                String disksRequired = jobStrings[jobStrings.length - 1];
 
-            //RECIEVE THE DATA [number] [length of characters].
-            str = din.readLine();
-            System.out.println("RCVD: \'" + str + "\'\n");
-            Integer numOfServers = Integer.parseInt(str.split(" ")[1]);
-            System.out.println("There should be: " + str.split(" ")[1] + " number of servers");
+                //REQUEST SERVERS
+                push("GETS Capable " + coresRequired + " " + memoryRequired + " " + disksRequired);
+    
+                //RECIEVE THE DATA [number] [length of characters].
+                recieve();
+                Integer totalServers = Integer.parseInt(str.split(" ")[1]);
+                System.out.println(" ---<>--- There should be: " + str.split(" ")[1] + " number of servers ---<>--- \n");
+    
+                //SEND 'OK'
+                push("OK");
+    
+                int mostCores = 0;
+                String currentType = "";
+                //RECIEVE THE SERVERS - MUST BE AT LEAST 1!
+                for(int i = 0; i < totalServers; i++){
+                    recieve();
+                    String[] serverInformation = str.split(" ");
+                    Integer cores = Integer.parseInt(serverInformation[4]);
 
-            //SEND 'OK'
-            push("OK");
+                    //bigger than the old one.. i.e. 16 over 4
+                    if(cores > mostCores){
+                        largestType = serverInformation[0]; //set to the biggest type
+                        numberOfServers = 0; //reset the number of servers.
+                        mostCores = cores; //set the new mostCores.
+                        currentType = serverInformation[0]; //set the current type we're looking for.
+                    }
+                    //increase number of servers if of the same type.
+                    if(serverInformation[0] == currentType){
+                        numberOfServers++;
+                    }
+                }
 
-            //RECIEVE THE SERVERS.
-            for(int i = 0; i < numOfServers; i++){
+                push("OK");
+
+                //RECIEVE '.'
                 recieve();
             }
 
-            // str = din.readLine();
-            // System.out.println("RCVD: \'" + str + "\'\n");
-        // }
+            /**
+             * 
+             *  SCHEDULE THE JOBS BY INDEX.
+             * 
+            */
 
-        // String[] brkn = str.split(" ");
-        // String cores = brkn[brkn.length - 3];
-        // String mem = brkn[brkn.length - 2];
-        // String disk = brkn[brkn.length - 1];
-        // String id = brkn[2];
-        // System.out.println("---<>--- id: " + id + ", cores: " + cores + ", mem: " + mem + ", disk: " + disk + "---<>---\n");
+            if(index == numberOfServers){
+                index = 0;
+            }
 
-        // //SEND JOB SCHEDULE
-        // push("GETS Capable " + cores + " " + mem + " " + disk);
+            //SEND JOB SCHEDULE
+            push("SCHD " + jobId + " " + largestType + " " + index);
+            index++;
 
-        // //READ LINE
-        // recieve();
+        }
 
-        // //SEND OK
-        // push("OK");
-        // dout.flush();
-
-        // //READ LINE
-        // recieve();
-
-        // //SEND OK x2
-        // push("OK");
-        // dout.flush();
-
-        // //READ LINE
-        // recieve();
-
-        // String[] brkn2 = str.split(" "); 
-        // String type = brkn2[0];
-        // String serverId = brkn2[1];
-
-        // //SEND JOB SCHEDULE
-        // push("SCHD " + id + " " + type + " " + serverId);
-
-        // //READ LINE
-        // recieve();
-
-        // //SEND OK
-        // push("ok");
-        // dout.flush();
-
-        // //READ LINE
-        // recieve();
+        /**
+             * 
+             *  QUIT!
+             * 
+            */
 
         //QUIT!
         push("QUIT");
