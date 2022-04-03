@@ -39,7 +39,7 @@ public class DSClient {
         recieve();
 
         //SEND AUTH
-        push("AUTH ERIK.FRYKBERG");
+        push("AUTH erik");
 
         //EXPECT 'OK'
         recieve();
