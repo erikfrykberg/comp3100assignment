@@ -117,7 +117,7 @@ public class DSClient {
     }
 
     static void recieved(String str) {
-        System.out.println("RCVD: \'" + str + "\'");
+        System.out.println("RCVD: \'" + str + "\'\n");
     }
 
     static void push(String str) throws IOException {
