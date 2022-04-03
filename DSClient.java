@@ -73,6 +73,7 @@ public class DSClient {
             jobId = jobStrings[2];
 
             //if the largest server type has not been set, then:
+            System.out.println(" ---<>--- largest type equals: " + largestType + " ---<>---\n");
             if(largestType.equals("")) {
                 
                 String coresRequired = jobStrings[jobStrings.length - 3];
@@ -106,7 +107,7 @@ public class DSClient {
                         currentType = serverInformation[0]; //set the current type we're looking for.
                     }
                     //increase number of servers if of the same type.
-                    if(serverInformation[0] == currentType){
+                    if(serverInformation[0].equals(currentType)){
                         numberOfServers++;
                     }
                 }
@@ -126,11 +127,11 @@ public class DSClient {
             if(index == numberOfServers){
                 index = 0;
             }
-
+            System.out.println("---<>--- number of servers: " + numberOfServers + "\n");
+            System.out.println("---<>--- index: " + index + "\n");
             //SEND JOB SCHEDULE
             push("SCHD " + jobId + " " + largestType + " " + index);
             index++;
-
         }
 
         /**
