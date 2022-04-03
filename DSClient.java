@@ -1,7 +1,7 @@
 import java.net.*;
 import java.io.*;
 
-public class DSClient2 {
+public class DSClient {
     static DataOutputStream dout;
     public static void main(String[] args) throws Exception {
         Socket s=new Socket("localhost",50000);  
@@ -120,7 +120,7 @@ public class DSClient2 {
         System.out.println("RCVD: \'" + str + "\'");
     }
 
-    static void push(String str) {
+    static void push(String str) throws IOException {
         str = str + "\n";
         dout.write((str).getBytes());
         System.out.println("SENT: " + str);
