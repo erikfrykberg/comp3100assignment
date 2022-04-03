@@ -69,6 +69,10 @@ public class DSClient {
             //EXPECT JOBN or NONE RESPONSE
             recieve();
 
+            if(str.equals("NONE")) {
+                break;
+            }
+
             //the following is the JOB breakdown.
             String[] jobStrings = str.split(" "); 
             jobCommand = jobStrings[0];
