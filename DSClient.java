@@ -68,7 +68,7 @@ public class DSClient {
             //EXPECT JOBN or NONE RESPONSE
             recieve();
 
-            //the following is the first JOB breakdown.
+            //the following is the JOB breakdown.
             String[] jobStrings = str.split(" "); 
             jobId = jobStrings[2];
 
@@ -132,6 +132,8 @@ public class DSClient {
             //SEND JOB SCHEDULE
             push("SCHD " + jobId + " " + largestType + " " + index);
             index++;
+
+            recieve();
         }
 
         /**
