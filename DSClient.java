@@ -69,13 +69,19 @@ public class DSClient {
             push("GETS Capable " + coresRequired + " " + memoryRequired + " " + disksRequired);
 
             //RECIEVE THE DATA [number] [length of characters].
-            recieve();
+            str = din.readLine();
+            System.out.println("RCVD: \'" + str + "\'\n");
+            Integer numOfServers = Integer.parseInt(str.split(" ")[1]);
+            System.out.println("There should be: " + str.split(" ")[1] + " number of servers");
 
             //SEND 'OK'
             push("OK");
 
             //RECIEVE THE SERVERS.
-            recieve();
+            for(int i = 0; i < numOfServers; i++){
+                recieve();
+            }
+
             // str = din.readLine();
             // System.out.println("RCVD: \'" + str + "\'\n");
         // }
