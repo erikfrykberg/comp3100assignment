@@ -45,19 +45,36 @@ public class DSClient {
 
         /**
          * 
-         *  DETERMINE AND SAVE THE LARGEST SERVER TYPES.
+         *  LOOP THROUGH THE JOBS.
          * 
         */
-        
-        push("GETS all");
-        
-        recieve();
 
-        // //SEND REDY
-        // push("REDY");
+        //WHILE THERE ARE JOBS TO SCHEDULE.
+        while(!str.equals("NONE")) {
 
-        // //EXPECT SYSTEM LOG INFORMATION
-        // recieve();
+            //SEND REDY (for jobs)
+            push("REDY");
+
+            //EXPECT JOBN or NONE RESPONSE
+            recieve();
+
+            //the following is the first JOB breakdown.
+            String[] brkn = str.split(" "); 
+            String jobId = brkn[2];
+
+            //REQUEST SERVERS
+            push("GETS all");
+
+            //RECIEVE THE DATA [number] [length of characters].
+            recieve();
+
+            //SEND 'OK'
+            push("OK");
+
+            //RECIEVE THE SERVERS.
+            str = din.readLine();
+            System.out.println("RCVD: \'" + str + "\'\n");
+        }
 
         // String[] brkn = str.split(" ");
         // String cores = brkn[brkn.length - 3];
