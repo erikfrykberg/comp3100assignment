@@ -61,7 +61,7 @@ public class DSClient {
         String mem = brkn[brkn.length - 2];
         String disk = brkn[brkn.length - 1];
         String id = brkn[2];
-        System.out.println("id: " + id + ", cores: " + cores + ", mem: " + mem + ", disk: " + disk);
+        System.out.println("---<>--- id: " + id + ", cores: " + cores + ", mem: " + mem + ", disk: " + disk + "---<>---\n");
 
         //SEND JOB SCHEDULE
         push("GETS Capable " + cores + " " + mem + " " + disk);
