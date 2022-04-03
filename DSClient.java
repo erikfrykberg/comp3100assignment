@@ -65,11 +65,14 @@ public class DSClient {
             recieve();
 
             //the following is the first JOB breakdown.
-            String[] brkn = str.split(" "); 
-            String jobId = brkn[2];
+            String[] jobStrings = str.split(" "); 
+            String coresRequired = jobStrings[jobStrings.length - 3];
+            String memoryRequired = jobStrings[jobStrings.length - 2];
+            String disksRequired = jobStrings[jobStrings.length - 1];
+            String jobId = jobStrings[2];
 
             //REQUEST SERVERS
-            push("GETS all");
+            push("GETS Capable " + cores + " " + mem + " " + disk);
 
             //RECIEVE THE DATA [number] [length of characters].
             recieve();
