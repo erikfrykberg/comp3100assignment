@@ -50,19 +50,13 @@ public class DSClient {
         */
         System.out.println(" ---<>--- str equals: " + str + " ---<>--- \n");
         //WHILE THERE ARE JOBS TO SCHEDULE.
-        while(!str.equals("NONE")) {
+        // while(!str.equals("NONE")) {
 
             //SEND REDY (for jobs)
             push("REDY");
 
             //EXPECT JOBN or NONE RESPONSE
             recieve();
-
-            // //SEND 'OK'
-            // push("OK");
-
-            // //RECIEVE "REPEATED CALL"
-            // recieve();
 
             //the following is the first JOB breakdown.
             String[] jobStrings = str.split(" "); 
@@ -81,9 +75,10 @@ public class DSClient {
             push("OK");
 
             //RECIEVE THE SERVERS.
-            str = din.readLine();
-            System.out.println("RCVD: \'" + str + "\'\n");
-        }
+            recieve();
+            // str = din.readLine();
+            // System.out.println("RCVD: \'" + str + "\'\n");
+        // }
 
         // String[] brkn = str.split(" ");
         // String cores = brkn[brkn.length - 3];
