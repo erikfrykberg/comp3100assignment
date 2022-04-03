@@ -52,6 +52,7 @@ public class DSClient {
 
         //JOB VARIABLES
         String jobId; 
+        String jobCommand;
 
         // SERVER VARIABLES
         String largestType = ""; //store the largest type.
@@ -70,6 +71,7 @@ public class DSClient {
 
             //the following is the JOB breakdown.
             String[] jobStrings = str.split(" "); 
+            jobCommand = jobStrings[0];
             jobId = jobStrings[2];
 
             //if the largest server type has not been set, then:
@@ -123,17 +125,22 @@ public class DSClient {
              *  SCHEDULE THE JOBS BY INDEX.
              * 
             */
+            
+            //check to make sure that it is a normal JOB.
+            if(jobCommand.equals("JOBN")){
+                if(index == numberOfServers){
+                    index = 0;
+                }
+                System.out.println("---<>--- number of servers: " + numberOfServers + "\n");
+                System.out.println("---<>--- index: " + index + "\n");
+                //SEND JOB SCHEDULE
+                push("SCHD " + jobId + " " + largestType + " " + index);
+                index++;
 
-            if(index == numberOfServers){
-                index = 0;
+                recieve();
+            } else if(jobCommand.equals("JCPL")){
+                System.out.println("-- COMPLETED JOB " + jobId + "!\n");
             }
-            System.out.println("---<>--- number of servers: " + numberOfServers + "\n");
-            System.out.println("---<>--- index: " + index + "\n");
-            //SEND JOB SCHEDULE
-            push("SCHD " + jobId + " " + largestType + " " + index);
-            index++;
-
-            recieve();
         }
 
         /**
