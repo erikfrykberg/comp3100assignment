@@ -48,7 +48,7 @@ public class DSClient {
          *  LOOP THROUGH THE JOBS.
          * 
         */
-
+        System.out.println(" ---<>--- str equals: " + str + " ---<>--- \n");
         //WHILE THERE ARE JOBS TO SCHEDULE.
         while(!str.equals("NONE")) {
 
