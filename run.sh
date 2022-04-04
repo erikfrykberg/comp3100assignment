@@ -1,4 +1,4 @@
 #!/bin/bash
-echo "This script is about to run another script."
+echo "RUNNING ERIK FRYKBERG'S DSClient.class!"
 sh ./demoS1.sh -n DSClient.class
-echo "This script has just run another script."
+echo "Successful! Well done."
